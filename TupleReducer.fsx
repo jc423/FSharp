@@ -1,6 +1,4 @@
-﻿
-
-module TupleOps =  
+﻿module TupleOps =  
     let rec createPairs (list) =
         match list with
         |[]->[]
@@ -51,6 +49,7 @@ module Team =
                               {Name = "Iowa"; Ranking = 18; Seed = 7};{Name = "Davidson"; Ranking = 60; Seed = 10};
                               {Name = "Gonzaga"; Ranking = 7; Seed = 2};{Name = "North Dakota St"; Ranking = 67; Seed = 15}]
 
+    //assign probabilities of higher ranked team
     let getOddsByRankDiff (difference) =
         if difference < 1 then 0.5
         elif difference < 4 then 0.55
@@ -70,18 +69,18 @@ module BracketPicker =
                                                         if (rnd.NextDouble() < Team.getOddsByRankDiff(abs(a.Ranking - b.Ranking))) then fst(rankedOrder)
                                                         else snd(rankedOrder)
 
-    //make regional brackets TODO - take raw teams and order by seeds
+    //make regional brackets TO DO - take raw regions and order by seeds
     let mwRegionBracket = TupleOps.createPairs Team.midWestRegionTeams
     let wRegionBracket = TupleOps.createPairs Team.westRegionTeams
     let eastRegionBracket = TupleOps.createPairs Team.eastRegionTeams
     let southRegionBracket = TupleOps.createPairs Team.southRegionTeams
 
+    //TO DO - save results of each round
     let rec bracketPicker (list: (Team.Team*Team.Team) list) =
         match list with
         | [] -> []
         | [a] -> [a]
         | _ -> Console.WriteLine(sprintf "%A" list);bracketPicker (TupleOps.createPairs (List.map(calcWinner) list))
 
-    //evaluate to championship game
     let champion = calcWinner ((bracketPicker (bracketPicker (mwRegionBracket @ wRegionBracket)) @ (bracketPicker (eastRegionBracket @ southRegionBracket))).Item(0))
 
