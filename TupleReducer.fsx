@@ -80,8 +80,10 @@ module BracketPicker =
         match list with
         | [] -> []
         | [a] -> [a]
-        | _ -> Console.WriteLine(sprintf "%A" list);bracketPicker (TupleOps.createPairs (List.map(calcWinner) list))
+        | _ ->  list |> List.iter (fun x -> printf "%s %s  " (fst x).Name (snd x).Name)
+                printf "%s" System.Environment.NewLine
+                bracketPicker (TupleOps.createPairs (List.map(calcWinner) list))
 
     //evaluate to championship game
-    let champion = calcWinner ((bracketPicker (bracketPicker (mwRegionBracket @ wRegionBracket)) @ (bracketPicker (eastRegionBracket @ southRegionBracket))).Item(0))
+    let champion = calcWinner ((bracketPicker (mwRegionBracket @ wRegionBracket @ eastRegionBracket @ southRegionBracket)).Item(0))
 
